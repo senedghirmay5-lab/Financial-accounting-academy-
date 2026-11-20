@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>Financial Accounting Academy</title>
+<style>
+:root{--bg:#0b1220;--panel:#121e30;--panel2:#18263b;--ink:#edf4ff;--muted:#a9bad1;--accent:#72d6c4;--gold:#ffd27a;--line:#2a3b54;--good:#7de0a3;--bad:#ff9b9b}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0b1220,#111d2d 55%,#0b1220);color:var(--ink);font:16px/1.58 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:24px max(18px,calc((100vw - 1100px)/2));background:#101a2a;border-bottom:1px solid var(--line)}
+.brand{color:var(--accent);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:800}
+h1{font-size:clamp(1.8rem,5vw,3rem);line-height:1.08;margin:.4rem 0}.sub{color:var(--muted);max-width:760px}
+main{max-width:1100px;margin:auto;padding:20px 16px 70px}.top{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}
+.panel,.lesson,.chapter,.tool{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0}
+.progress{height:9px;background:#26364c;border-radius:20px;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+button,select,input{font:inherit;border-radius:11px;border:1px solid var(--line);padding:10px 13px;background:var(--panel2);color:var(--ink)}
+button{cursor:pointer}button.primary{background:var(--accent);color:#09211e;border:0;font-weight:800}button:hover{filter:brightness(1.1)}
+select{max-width:100%}.muted{color:var(--muted)}.tag{font-size:.76rem;color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.chapter{cursor:pointer;transition:.15s}.chapter:hover,.chapter.active{border-color:var(--accent);transform:translateY(-1px)}
+.chapter h3{margin:.2rem 0}.chapter p{color:var(--muted);font-size:.92rem;margin:.3rem 0}
+h2{margin:.25rem 0 .7rem;font-size:1.5rem}h3{margin:1rem 0 .3rem}h4{margin:.8rem 0 .25rem;color:var(--gold)}
+ul,ol{padding-left:1.35rem}li{margin:.25rem 0}
+.diagram{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:14px 0}.diagram div{background:#1b3040;border:1px solid #35516a;border-radius:12px;padding:12px;text-align:center;font-weight:700}.diagram span{display:block;color:var(--muted);font-size:.78rem;font-weight:400}.callout{background:#1b3040;border-left:4px solid var(--accent);padding:12px 14px;border-radius:10px;margin:12px 0}
+.example{background:#17283a;border:1px solid #334b61;padding:13px;border-radius:12px;margin:10px 0}
+.formula{font-weight:800;color:var(--gold);font-size:1.05rem}
+.quizq{padding:14px;border:1px solid var(--line);border-radius:12px;margin:10px 0}.quizq label{display:block;padding:5px 0;cursor:pointer}
+.answer{display:none;margin-top:8px;color:var(--good)}.answer.show{display:block}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.94rem}td,th{border:1px solid var(--line);padding:8px;text-align:left}th{background:#1b2b40}
+#content{min-height:300px}.small{font-size:.86rem}.hidden{display:none}
+footer{color:var(--muted);text-align:center;padding:30px 12px}
+.deep-lesson{border-top:1px solid var(--line);padding:12px 2px}.deep-lesson summary{cursor:pointer;padding:8px 2px;color:var(--gold)}.deep-body{padding:4px 8px 12px}.deep-body li{margin:7px 0}.game-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}.game-row select,.example label select{width:100%;margin:4px 0}.example label{display:block;margin:10px 0}.example button{margin-top:10px}
+@media(max-width:700px){.top{grid-template-columns:1fr}main{padding:12px}.panel,.lesson{padding:15px}}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">Personal learning edition</div>
+<h1>Financial Accounting Academy</h1>
+<p class="sub">A guided, interactive course built from <em>Principles of Financial Accounting</em> by Christine Jonick. Learn the seven chapters step by step, practise, test yourself and track your progress.</p>
+<div class="actions">
+<label class="small" for="language">Explanation language</label>
+<select id="language"><option value="en">English</option><option value="bi">English + Tigrinya key explanations</option><option value="ti">Tigrinya key explanations</option></select>
+<button id="reset" title="Clear saved study progress">Reset progress</button>
+</div>
+</header>
+<main>
+<section class="top">
+<div class="panel">
+<div class="tag">Your learning progress</div>
+<h2><span id="done">0</span> / 7 chapters completed</h2>
+<div class="progress"><span id="bar"></span></div>
+<p class="muted small">Your completed chapters and quiz results are saved on this device in this browser.</p>
+</div>
+<div class="panel">
+<div class="tag">Study coach</div>
+<h2>Ask the AI tutor</h2>
+<p class="muted small">This button opens ChatGPT with a ready-made prompt about the lesson you are studying. It is not an embedded AI chat; an internet connection and ChatGPT access are needed.</p>
+<button class="primary" id="tutor">Ask ChatGPT about this course</button>
+</div>
+</section>
+<h2>Course map</h2>
+<div class="grid" id="chapters"></div>
+<section id="content" class="lesson">
+<h2>Welcome to your course</h2>
+<p>Choose a chapter above. Work through its lessons, review the examples, then take the quiz. You can return to any chapter whenever you want.</p>
+<div class="callout">Core idea: accounting is a system for analysing, classifying, recording, summarising and interpreting business transactions.</div><div class="tag">Visual guide · the accounting process</div><div class="diagram"><div>1. Analyse<span>Understand the transaction</span></div><div>2. Journalise<span>Record debit and credit</span></div><div>3. Post<span>Update ledger accounts</span></div><div>4. Trial balance<span>Check debit = credit</span></div><div>5. Adjust<span>Update period balances</span></div><div>6. Statements<span>Report results and position</span></div><div>7. Close<span>Reset temporary accounts</span></div></div>
+</section>
+<section class="tool">
+<div class="tag">Quick practice tool</div>
+<h2>Accounting equation calculator</h2>
+<p class="muted small">Enter any two amounts to calculate the third. The equation must balance.</p>
+<div class="grid">
+<label>Assets <input id="assets" type="number" min="0" placeholder="e.g. 12000"></label>
+<label>Liabilities <input id="liabilities" type="number" min="0" placeholder="e.g. 5000"></label>
+<label>Equity <input id="equity" type="number" min="0" placeholder="e.g. 7000"></label>
+</div>
+<div class="actions"><button class="primary" id="calc">Calculate missing amount</button><button id="clearcalc">Clear</button></div>
+<p id="calcresult" class="callout" aria-live="polite">Assets = Liabilities + Stockholders’ Equity</p>
+</section>
+</main>
+<footer>Study carefully • Practise often • Understand the reason behind every debit and credit.</footer>
+<script>
+// Chapter 1 extension: detailed learning notes aligned to the original textbook sections.
+const chapterOneDeepDive = [
+  {title:"1.1 Introducing accounts and balances",pages:"Textbook pp. 1–3",body:"Accounting is the process of analysing, classifying, recording, summarising and interpreting business transactions. An account keeps a running dollar balance for one item so a business can answer questions such as ‘How much cash do we have now?’ or ‘How much rent expense have we recorded so far?’",points:["A transaction is a financial event that affects the business and can be measured in money.","An account is the record for one item; a balance is the current running total in that account.","A chart of accounts is the organised list of accounts used by a business."],example:"A small repair shop keeps separate accounts for Cash, Equipment, Accounts Payable, Fees Earned and Rent Expense. This lets the owner see each amount separately instead of mixing everything together."},
+  {title:"Five account categories",pages:"Textbook pp. 2–3",body:"The textbook groups accounts into five categories. Assets are valuable resources owned by the business. Liabilities are debts owed to outsiders. Stockholders’ equity is the owners’ residual claim. Revenue is income earned through the business’s ordinary activities. Expenses are costs incurred to earn revenue.",points:["Assets: Cash, equipment, supplies and accounts receivable.","Liabilities: Accounts payable, wages payable and notes payable.","Stockholders’ equity: Common stock and retained earnings.","Revenue: Fees Earned or Sales.","Expenses: Rent, wages, utilities, insurance and advertising."],example:"A repair shop has cash of $4,000, owes a supplier $600, and its owner has invested $3,400. Cash is an asset; the supplier amount is a liability; the owner’s claim is equity."},
+  {title:"1.2 Net income — a critical amount",pages:"Textbook p. 3",body:"Net income measures operating results for a period. Subtract the expenses incurred during that same period from revenue earned during that period. When expenses exceed revenue, the result is a net loss.",points:["Net income = Revenue − Expenses.","Use amounts from the same accounting period.","Net income is not the same as cash received: revenue and cash timing can differ, especially under accrual accounting."],example:"Revenue is $8,500 and expenses are $5,200. Net income = $8,500 − $5,200 = $3,300."},
+  {title:"1.3 The journal and debit/credit language",pages:"Textbook pp. 3–5",body:"The journal is the first place transactions are recorded. Transactions are entered in chronological order. Debit means the left side of an account and credit means the right side. These words do not automatically mean good/bad, increase/decrease or money in/money out; the effect depends on the account type.",points:["Analyse the transaction and identify every affected account.","Determine the amount affecting each account.","Apply the debit/credit rules; list debit accounts first.","Total debits in an entry must equal total credits."],example:"On June 1, a business pays $700 rent in cash. Debit Rent Expense $700 because the expense increases. Credit Cash $700 because cash decreases."},
+  {title:"1.3.2 Debit and credit rules",pages:"Textbook p. 4 and account rules developed in the chapter",body:"For the five account categories, the normal increase side is: assets and expenses increase by debit; liabilities, stockholders’ equity and revenue increase by credit. A decrease is recorded on the opposite side.",points:["Assets: debit to increase; credit to decrease.","Liabilities: credit to increase; debit to decrease.","Equity: credit to increase; debit to decrease.","Revenue: credit to increase; debit to decrease.","Expenses: debit to increase; credit to decrease."],example:"The owner invests $5,000 cash. Debit Cash $5,000 (asset increases); credit Common Stock $5,000 (equity increases)."},
+  {title:"1.3.3 Journalising transactions",pages:"Textbook pp. 4–6",body:"Journalising translates a financial event into a formal journal entry. Select the accounts, calculate the effects, decide which side each amount belongs on, and record the date and accounts. Credit account names are conventionally indented in a journal.",points:["Do not record an event that is not a business transaction measurable in money.","A transaction may affect more than two accounts, but total debits still equal total credits.","Never choose debit or credit based only on whether cash moved."],example:"A customer pays $1,200 cash for services already provided: Debit Cash $1,200; Credit Fees Earned $1,200."},
+  {title:"1.3.4–1.3.6 Ledger, posting and normal balance",pages:"Textbook pp. 6–12",body:"The ledger groups transactions by account and maintains each account’s running balance. Posting is the process of transferring each journal line to the matching ledger account. An account’s normal balance is the side where increases are recorded and where its balance normally remains.",points:["Journal = chronological order; ledger = grouped by account.","Post each journal line to the account named on that line.","Update the running balance after each posting.","Normal debit balances: assets and expenses. Normal credit balances: liabilities, equity and revenue."],example:"Cash begins at $2,000. The business receives $500 and later pays $300. Cash ledger: $2,000 + $500 − $300 = $2,200 debit balance."},
+  {title:"1.3.7 Trial balance",pages:"Textbook pp. 12–13",body:"A trial balance lists the ledger accounts and their balances at a particular time, with debit balances in one column and credit balances in another. Total debits should equal total credits. This checks arithmetic equality but does not guarantee that every transaction was recorded, classified or analysed correctly.",points:["Prepare it after posting ledger entries.","List each account balance on its normal side.","Compare total debit balances with total credit balances.","An equal trial balance can still contain errors, such as omitting a transaction entirely."],example:"If debit balances total $12,400 and credit balances total $12,400, the trial balance is arithmetically balanced."},
+  {title:"1.4 Financial statements and closing",pages:"Textbook pp. 13–24",body:"The income statement reports revenue and expenses for a period and calculates net income or net loss. Closing entries transfer temporary account balances (such as revenues and expenses) to retained earnings at period-end so those temporary accounts begin the next period at zero. The full chapter develops the accounting cycle and statements.",points:["Income statement: performance over a period.","Balance sheet: assets, liabilities and equity at a specific date.","Retained earnings statement: explains changes in retained earnings during a period.","Temporary accounts are closed; permanent balance-sheet accounts carry forward."],example:"If Fees Earned is $6,000 and expenses total $4,100, net income is $1,900. Closing transfers temporary revenue and expense balances as instructed by the accounting cycle."},
+  {title:"1.5–1.8 Assets, liabilities, equity and the accounting equation",pages:"Textbook pp. 25–42",body:"The accounting equation expresses the relationship between what the business controls and the claims against those resources. Assets = Liabilities + Stockholders’ Equity. Every transaction must preserve this equality. Revenue and expenses affect equity through retained earnings.",points:["Assets = Liabilities + Stockholders’ Equity.","An asset can be financed by creditors (liabilities) or owners (equity).", "Revenue generally increases retained earnings; expenses and dividends reduce retained earnings.","The balance sheet is an expanded presentation of the accounting equation."],example:"Assets are $15,000 and liabilities are $5,500. Equity = $15,000 − $5,500 = $9,500."}
+];
+
+const chapters = [
+{title:"Accounting Cycle — Cash Basis",pages:"1–43",desc:"Accounts, debit and credit, journal, ledger, trial balance, statements and closing entries.",
+lessons:[
+["1. Accounting and accounts","Accounting identifies, classifies, records, summarises and interprets business transactions. An account is a running record of one item, such as Cash, Equipment, Fees Earned or Utilities Expense. The book introduces five broad account categories: assets, liabilities, stockholders’ equity, revenue and expenses.","ሒሳብ ምዝገባ ናይ ንግዲ ግብይታት ምትንታን፣ ምምዳብ፣ ምምዝጋብን ምግምጋምን እዩ። Account ማለት ናይ ሓደ ነገር ቀጻሊ መዝገብ እዩ።","Know the five categories: assets (what the business has), liabilities (what it owes), equity (owners’ claim), revenue (amounts earned), and expenses (costs incurred)."],
+["2. Net income","Net income is the amount remaining when expenses are subtracted from revenue for a period. A net loss occurs when expenses exceed revenue. Net income is important because it measures the period’s profitability and affects retained earnings.","Net income ማለት ካብ ገቢ ወጻኢታት ምስ ተቐነሱ ዝተርፍ እዩ።","Formula: Net income = Revenue − Expenses."],
+["3. Journal, debit and credit","The journal is the chronological record of transactions. Each journal entry has equal total debits and credits. Debit means the left side of an account; credit means the right side. They do not automatically mean increase/decrease: the effect depends on account type.","Journal ግብይታት ብተኸታታሊ ዝምዝግብ መዝገብ እዩ። Debit ጸጋማይ ወገን፣ Credit የማናይ ወገን እዩ።","Normal increase rules: Assets and Expenses increase with debits. Liabilities, Equity and Revenue increase with credits. Decreases are recorded on the opposite side."],
+["4. Posting, ledger and trial balance","Posting transfers each journal entry to the relevant ledger accounts. A ledger groups all activity by account and shows its balance. A trial balance lists ledger balances to check whether total debits equal total credits. Equality is a useful arithmetic check, but it does not prove every transaction is correct.","Posting ካብ Journal ናብ Ledger ምስግጋር እዩ። Trial balance ድማ ድምር Debit እና Credit ንምንጽጻር ይጠቅም።","Do not confuse a journal (date order) with a ledger (account order)."],
+["5. Financial statements and closing","The income statement reports revenue, expenses and net income for a period. The retained earnings statement explains changes in retained earnings. The balance sheet reports assets, liabilities and equity at a date. Temporary revenue, expense and dividend accounts are closed at period-end into retained earnings so they start the next period at zero.","Income statement ኣብ ዝተወሰነ ግዜ ገቢን ወጻኢታትን የርኢ። Balance sheet ኣብ ሓደ ዕለት ንብረት፣ ዕዳን ናይ ወነንቲ መብትን የርኢ።","The chapter's cash-basis sequence introduces journalising, posting, preparing statements and closing temporary accounts. The later accrual chapter adds adjusting entries."]
+],
+example:"A service business earns $2,400 cash and pays $900 rent. Revenue = $2,400; expense = $900; net income = $1,500. Entries: Debit Cash 2,400 / Credit Fees Earned 2,400. Debit Rent Expense 900 / Credit Cash 900.",
+quiz:[
+["Which accounts normally increase with a debit?",["Assets and expenses","Liabilities and revenue","Revenue and equity"],0,"Assets and expenses normally increase with debits."],
+["What is the main purpose of a ledger?",["Record transactions only by date","Group activity by account","Prepare the cash budget"],1,"The ledger groups transactions by individual account."],
+["Revenue $5,000 and expenses $3,200. Net income?",["$8,200","$1,800","$3,200"],1,"$5,000 − $3,200 = $1,800."]
+]},
+{title:"Accounting Cycle — Accrual Basis",pages:"44–82",desc:"Accrual accounting, matching, adjusting entries, deferrals and accruals.",
+lessons:[
+["1. Cash basis vs accrual basis","Cash-basis accounting records revenue when cash is received and expenses when cash is paid. Accrual-basis accounting records revenue when earned and expenses when incurred, even if cash is received or paid at another time. The textbook moves from cash basis to accrual basis to show how timing affects statements.","Cash basis ገንዘብ ምስ ተቐበልካ ወይ ምስ ከፈልካ ይምዝግብ። Accrual basis ገቢ ምስ ተረኸበን ወጻኢ ምስ ተፈጸመን ይምዝግብ።","Accrual basis separates the timing of earning/incurring from the timing of cash movement."],
+["2. Matching principle and adjustments","The matching principle connects expenses with the revenues they help generate in the appropriate accounting period. Adjusting entries are made at the end of a period before statements are prepared. Each adjustment affects at least one income-statement account and one balance-sheet account.","Matching principle ወጻኢታት ምስቲ ዝምልከቶ ገቢን ብትኽክለኛ ግዜን የተኣሳስር።","Adjustments update account balances that are not yet current for the period."],
+["3. Deferrals — prepaid expenses","A deferred expense happens when a business pays first and uses the benefit later, such as prepaid rent, insurance or supplies. Initially it is recorded as an asset. As the benefit is used, an adjusting entry records an expense and reduces the asset. Depreciation allocates the cost of a long-lived asset over its useful life.","Prepaid expense ማለት ኣቐዲምካ ዝተኸፈለ ግን ጥቕሙ ገና ዘይተጠቕምካሉ ወጻኢ እዩ።","Example: paid $1,200 for 12 months of insurance. After one month, insurance expense is $100 and prepaid insurance remaining is $1,100."],
+["4. Deferrals — unearned revenue","Deferred revenue occurs when cash is received before the service is performed. The initial credit is a liability such as Unearned Fees because the business still owes service. As service is performed, an adjustment debits the liability and credits revenue.","Unearned revenue ማለት ክፍሊት ተቐቢልካ ግን እቲ ኣገልግሎት ገና ዘይፈጸምካዮ እዩ።","Example: received $1,000 in advance; earned $600 by month-end. Debit Unearned Fees $600; Credit Fees Earned $600. Remaining liability = $400."],
+["5. Accruals — accrued expenses and revenue","An accrued expense is incurred before it is paid or recorded, such as wages owed at period-end. An accrued revenue is earned before cash is received or recorded, such as services completed but not yet billed. Adjusting entries recognise the expense/payable or receivable/revenue in the correct period.","Accrued expense ዝተፈጸመ ግን ገና ዘይተኸፍለ ወጻኢ እዩ። Accrued revenue ዝተረኸበ ግን ገና ዘይተቐበልካዮ ገቢ እዩ።","Accrued wages: Debit Wages Expense; Credit Wages Payable. Accrued service revenue: Debit Accounts Receivable; Credit Fees Earned."]
+],
+example:"Advance received $1,000; by month-end $600 of service has been provided. Adjustment: Debit Unearned Fees $600; Credit Fees Earned $600. The remaining $400 is still a liability.",
+quiz:[
+["When is revenue recognised under accrual accounting?",["Only when cash arrives","When it is earned","Only at year-end"],1,"Accrual accounting recognises revenue when earned."],
+["A customer prepays for future services. Initially this is usually:",["Revenue","A liability","An expense"],1,"The business owes the service, so it records unearned revenue as a liability."],
+["Which entry records wages incurred but unpaid?",["Debit Wages Expense; Credit Wages Payable","Debit Cash; Credit Wages Expense","Debit Wages Payable; Credit Cash"],0,"Recognise the expense and the amount owed."]
+]},
+{title:"Accounting Cycle — Merchandising Business",pages:"83–103",desc:"Merchandising statements, perpetual and periodic inventory, discounts, freight and returns.",
+lessons:[
+["1. Merchandising business","A merchandising business buys goods from vendors and resells them to customers. Its main inventory-related cost is Cost of Merchandise Sold. A multi-step income statement makes the relationship between net sales, cost of merchandise sold and gross profit visible.","Merchandising business ኣቑሑ ካብ ኣቕረብቲ ገዚኡ ንዓማዊል ዝሸይጥ ንግዲ እዩ።","Net Sales = Sales − Sales Returns − Sales Discounts. Gross Profit = Net Sales − Cost of Merchandise Sold. Net Income = Gross Profit − Operating Expenses."],
+["2. Perpetual inventory system","Under the perpetual system, Merchandise Inventory is updated continuously when goods are purchased, returned or sold. When a sale occurs, the seller records both the sales side and the cost side: revenue/receivable or cash, and Cost of Merchandise Sold/Inventory.","Perpetual system ኣብ ነፍሲ ወከፍ ግዜ ምግዛእን ምሻጥን መዝገብ ክምሕደር ይገብር።","Example sale: Debit Accounts Receivable; Credit Sales. Then Debit Cost of Merchandise Sold; Credit Merchandise Inventory."],
+["3. Returns, discounts and freight","Purchase returns reduce what the buyer owes and the inventory cost. Sales returns reduce net sales and may restore inventory cost. Cash discounts encourage early payment; the discount is recorded when payment is made. Freight terms determine which party pays transportation. The textbook explains transportation cost treatment for buyer and seller.","Discount ንብረት ብቕልጡፍ ክፍሊት ንምትብባዕ ዝወሃብ ቅናሽ እዩ።","Terms 2/10, n/30 generally mean a 2% discount if paid within 10 days; otherwise the full net amount is due within 30 days. Apply discounts to merchandise amount, not freight charges in the book's example."],
+["4. Periodic inventory system","Under the periodic system, the business does not maintain a continuously updated inventory balance. It counts ending inventory at period-end. Purchases, Purchases Returns, Purchases Discounts and Freight-in are temporary accounts used during the period and closed into inventory calculations.","Periodic system ኣብ መወዳእታ ግዜ ብቑጽሪ ኣቑሑ ዝተረፈ ይውስን።","Cost of goods available for sale = Beginning Inventory + Net Purchases. Cost of Merchandise Sold = Cost of Goods Available − Ending Inventory."],
+["5. Inventory shrinkage and closing","Inventory shrinkage is the difference between inventory records and the physical count, often arising from loss, damage or recording errors. Period-end closing entries transfer temporary merchandising balances so the next period begins with the appropriate balances.","Inventory shrinkage ማለት ኣብ መዝገብ ዘሎ ብዝሒ ምስ ብኣካል ዝተቖጽረ ብዝሒ ዘይምስምማዕ እዩ።","Always distinguish the perpetual system (ongoing records) from the periodic system (period-end count)."]
+],
+example:"A shop has Sales $1,000, Returns $40, Discounts $20, Cost of Merchandise Sold $340 and operating expenses $200. Net sales = $940; gross profit = $600; net income = $400.",
+quiz:[
+["Gross profit is:",["Net sales minus cost of merchandise sold","Sales minus wages only","Assets minus liabilities"],0,"Gross profit = Net Sales − Cost of Merchandise Sold."],
+["Which account is continuously updated in a perpetual system?",["Purchases","Merchandise Inventory","Freight-in"],1,"The Merchandise Inventory account is updated for each purchase and sale."],
+["Under periodic inventory, ending inventory is determined by:",["A physical count at period-end","Each sale entry automatically","The bank statement"],0,"The periodic system relies on a physical count at period-end."]
+]},
+{title:"Assets in More Detail",pages:"104–199",desc:"Inventory costing, cash and bank reconciliation, receivables, fixed assets, depreciation and investments.",
+lessons:[
+["1. Inventory systems and costing","The chapter reviews perpetual and periodic systems and inventory valuation. FIFO assigns the earliest costs to goods sold first; LIFO assigns the latest costs first; average cost uses a weighted average cost per unit. The method affects Cost of Merchandise Sold, gross profit and ending inventory when unit costs change.","FIFO ቀዳማይ ዝኣተወ ቀዳማይ ይወጽእ። LIFO ድሕሪታይ ዝኣተወ ቀዳማይ ይወጽእ። Average cost ማእከላይ ዋጋ ይጥቀም።","Average cost per unit = Cost of goods available ÷ Units available. Ending inventory = Units remaining × assigned unit cost."],
+["2. Cash and bank reconciliation","A bank reconciliation explains differences between the cash balance in the company's records and the bank statement. Common reconciling items include deposits in transit, outstanding cheques, bank service charges and errors. Adjust the company's books for items not yet recorded by the company; identify timing differences separately.","Bank reconciliation ኣብ መዝገብ ኩባንያን መግለጺ ባንክን ዘሎ ፍልልይ የብርህ።","Do not treat every difference as an error: some are timing differences. The reconciled adjusted balances should agree."],
+["3. Notes receivable and uncollectible accounts","A note receivable is a written promise to receive money, often with interest, on a future maturity date. Uncollectible accounts are customer receivables that may not be collected. The book discusses the direct write-off method and the allowance method; the allowance method estimates uncollectible amounts and presents receivables net of the allowance.","Note receivable ብጽሑፍ ዝተረጋገጸ ኣብ መጻኢ ገንዘብ ክትቅበል ዘለካ መብጽዓ እዩ።","Interest = Principal × Annual rate × Time fraction. Check whether time is expressed in months or days, and use the convention specified in the exercise."],
+["4. Fixed assets and depreciation","Fixed assets are physical assets used over more than one accounting period. Depreciation allocates the depreciable cost over the useful life; it is not a direct measure of market value. Accumulated Depreciation is a contra-asset account. Book value = Asset cost − Accumulated Depreciation.","Depreciation ዋጋ ንብረት ብግዜ ኣጠቓቕማ ናብ ወጻኢ ምክፍፋል እዩ።","Straight-line annual depreciation = (Cost − Salvage value) ÷ Useful life. Units-of-production uses actual activity; declining-balance applies a rate to book value."],
+["5. Disposal, intangible assets and investments","When a fixed asset is sold or disposed of, remove its cost and accumulated depreciation and compare proceeds with book value to determine a gain or loss. Intangible assets lack physical substance; finite-life intangibles may be amortised. The chapter also covers investments in stock and bonds, including held-to-maturity and trading securities.","Intangible asset ኣካላዊ ቅርጺ ዘይብሉ ንብረት እዩ። Amortization ዋጋ ናይ ውሱን ዕድመ ዘለዎ ዘይኣካላዊ ንብረት ምክፍፋል እዩ።","Gain/loss on disposal = Cash proceeds − Book value. Positive result is a gain; negative result is a loss."]
+],
+example:"Equipment cost $10,000, salvage value $1,000, useful life 3 years. Straight-line depreciation = ($10,000 − $1,000) ÷ 3 = $3,000 per year. After one full year, book value = $7,000.",
+quiz:[
+["Which method uses the earliest inventory costs first?",["LIFO","FIFO","Average cost"],1,"FIFO means first-in, first-out."],
+["Book value of equipment is:",["Cost plus depreciation","Cost minus accumulated depreciation","Market price only"],1,"Book value = cost − accumulated depreciation."],
+["A bank service charge not yet recorded by the company usually requires:",["An adjustment to the company's cash records","No action ever","An increase in revenue"],0,"Record the service charge in the company's books."]
+]},
+{title:"Liabilities in More Detail",pages:"200–232",desc:"Sales tax, payroll, short- and long-term notes payable, bonds, premiums and discounts.",
+lessons:[
+["1. Understanding liabilities","A liability is an obligation owed to another party. Current liabilities are expected to be settled within the coming year or operating cycle as classified by the textbook; long-term liabilities are due later. Examples include accounts payable, wages payable, taxes payable, notes payable and bonds payable.","Liability ማለት ኩባንያ ንኻልእ ወገን ክኸፍሎ ዘለዎ ግዴታ እዩ።","Classification matters because users assess short-term liquidity as well as long-term financing."],
+["2. Sales tax and payroll","Sales tax collected from customers is not the seller's revenue; it is generally recorded as an amount payable to the tax authority. Payroll accounting records employee earnings, deductions and amounts payable. The chapter develops sales-tax and payroll liabilities and their journal entries.","Sales tax ካብ ዓማዊል ዝተኣከበ ግብሪ ናይ ኩባንያ ገቢ ኣይኮነን፤ ክኽፈል ዘለዎ ዕዳ እዩ።","Separate gross wages, employee deductions and employer obligations according to the accounts used in the exercise."],
+["3. Notes payable","A note payable is a formal written loan agreement. Short-term notes are due soon; long-term notes extend beyond the short-term period. Installments due within the coming year are classified as current, while later installments remain long-term. Interest is recognised over time.","Note payable ብጽሑፍ ዝተረጋገጸ ዕዳ ልቓሕ እዩ።","Interest = Principal × Annual interest rate × Time. Keep principal repayment separate from interest expense."],
+["4. Bonds","A bond is a debt contract issued to many lenders/investors. Bondholders are creditors, not owners. The bond contract specifies face amount, contract interest rate, term and maturity date. The market rate helps determine whether bonds issue at face value, a discount or a premium.","Bondholders ኣብ ኩባንያ ወነንቲ ኣይኮኑን፤ ገንዘብ ዘለቅሑ ኣበደርቲ እዮም።","If contract rate = market rate, bonds issue at face value. If contract rate is below market, investors generally pay a discount. If above market, they generally pay a premium."],
+["5. Bond interest and redemption","The chapter examines bond transactions at different rate relationships, carrying amounts of bonds issued at a discount or premium, calling bonds, partial years and partial redemptions. Work carefully with dates, interest periods and the bond's carrying amount.","Carrying amount ማለት ኣብ መዝገብ ዝተረፈ ዋጋ ቦንድ እዩ።","Do not confuse face value with issue price or carrying amount. Follow the specific amortisation method and dates required by the problem."]
+],
+example:"A $10,000 note at 6% annual interest for 3 months: interest = $10,000 × 0.06 × 3/12 = $150. The principal is still $10,000; interest is a separate cost.",
+quiz:[
+["Bondholders are:",["Owners of the corporation","Creditors who lend money","Employees"],1,"Bondholders lend money and receive interest; they do not become stockholders."],
+["If contract interest rate is below market rate, bonds generally issue at:",["A discount","A premium","Always face value"],0,"A lower contract rate is less attractive, so issue price is generally below face value."],
+["A note payable due in the next year is classified as:",["Current liability","Stockholders' equity","Revenue"],0,"Amounts due within the coming year are current liabilities."]
+]},
+{title:"Stockholders’ Equity in More Detail",pages:"233–254",desc:"Corporate ownership, issuing stock, treasury stock, dividends, equity statements and stock splits.",
+lessons:[
+["1. Accounting equation and corporations","The accounting equation remains Assets = Liabilities + Stockholders’ Equity. A corporation is a separate legal entity from its owners. Stockholders own shares and have a claim on the corporation's net assets after liabilities.","Stockholders’ equity ናይ ወነንቲ ኣብ ንብረት ኩባንያ ዘለዎም መብት እዩ።","Equity is not the same as cash. It is the owners' residual claim after liabilities."],
+["2. Issuing stock","A corporation can raise funds by issuing common or preferred stock for cash or non-cash assets. The accounting entry records the asset received and the appropriate stockholders' equity accounts. The chapter discusses par value and issuance for different forms of consideration.","Issuing stock ማለት ኩባንያ ኣክስዮን ብምሻጥ ካፒታል ምእካብ እዩ።","Record the fair value/amount specified by the exercise and distinguish the stock account from additional paid-in capital where applicable."],
+["3. Treasury stock","Treasury stock is a corporation's own stock that it has reacquired. It is treated as a contra-equity account in the chapter's presentation and reduces total stockholders' equity. It is not an asset of the corporation.","Treasury stock ኩባንያ ካብ ዕዳጋ ዳግማይ ዝገዝኦ ናይ ገዛእ ርእሱ ኣክስዮን እዩ።","Keep treasury stock separate from investments in another company's shares."],
+["4. Cash and stock dividends","Cash dividends distribute corporate profits to stockholders and reduce retained earnings. Stock dividends distribute additional shares rather than cash. The chapter explains the entries and calculations for dividends and the presentation of equity on the balance sheet.","Cash dividend ገንዘብ ንወነንቲ ምክፋል እዩ። Stock dividend ተወሳኺ ኣክስዮን ምሃብ እዩ።","A dividend is a distribution to owners, not an operating expense."],
+["5. Stock splits and equity presentation","A stock split increases the number of shares and proportionally reduces the per-share amount; it does not by itself change total stockholders' equity. The chapter also reviews the stockholders' equity section of the balance sheet and dividend calculations.","Stock split ብዝሒ ኣክስዮናት የብዝሕ፣ ዋጋ ነፍሲ ወከፍ ኣክስዮን ድማ ብተመጣጣኒ ይቕንስ።","Distinguish a stock split from a stock dividend and from issuing new shares for cash."]
+],
+example:"A corporation has Assets $80,000 and Liabilities $30,000. Stockholders' Equity = $80,000 − $30,000 = $50,000. Paying a $2,000 cash dividend reduces cash and retained earnings by $2,000.",
+quiz:[
+["The accounting equation is:",["Assets = Liabilities + Equity","Assets = Revenue − Expenses","Liabilities = Assets + Revenue"],0,"Assets = Liabilities + Stockholders' Equity."],
+["Cash dividends are:",["Operating expenses","Distributions to stockholders","A liability forever"],1,"Dividends distribute profits to owners; they are not operating expenses."],
+["Treasury stock generally:",["Increases assets","Reduces stockholders' equity","Is revenue"],1,"Treasury stock is presented as contra-equity."]
+]},
+{title:"Statement of Cash Flows & Analysis",pages:"255–305",desc:"Four financial statements, cash-flow categories, direct and indirect methods, analysis and ratios.",
+lessons:[
+["1. Four financial statements","The income statement reports profitability for a period. The retained earnings statement explains accumulated profits and distributions. The balance sheet reports financial position at a date. The statement of cash flows explains cash inflows and outflows during a period. The cash-flow statement is prepared using information from the other statements.","Statement of cash flows ኣብ ግዜ ውሽጢ ገንዘብ ካበይ ከም ዝመጸን ኣበይ ከም ዝወጸን የርኢ።","Profit is not the same as cash flow. A business can report net income and still experience cash pressure."],
+["2. Operating, investing and financing","Operating activities relate to day-to-day operations and generally involve income-statement accounts and current assets/current liabilities. Investing activities involve long-term assets and investments. Financing activities involve raising or repaying long-term debt and equity transactions, including issuing stock, redeeming bonds and paying dividends.","Operating = መዓልታዊ ስራሕ። Investing = ነዊሕ ግዜ ንብረት/ወፍሪ። Financing = ምንጪ ካፒታልን ልቓሕን።","Classify each cash transaction by its nature, not simply by whether it is an inflow or outflow."],
+["3. Cash inflows and outflows","The statement reports cash received and cash paid within each of the three sections. Net cash flow for a section is inflows minus outflows. The total change in cash reconciles beginning cash to ending cash.","Cash inflow ናብ ኩባንያ ዝኣቱ ገንዘብ፤ cash outflow ካብ ኩባንያ ዝወጽእ ገንዘብ እዩ።","Ending cash = Beginning cash + Net increase (or − net decrease) in cash."],
+["4. Direct and indirect methods","The direct method reports major classes of operating cash receipts and payments, such as cash received from customers and cash paid for inventory or wages. The indirect method starts with net income and adjusts for non-cash items and changes in operating assets and liabilities. The textbook presents both formats.","Direct method ቀጥታ ገንዘብ ዝተቐበልካዮን ዝኸፈልካዮን የርኢ። Indirect method ካብ net income ብምጅማር ምምሕያሻት ይገብር።","Depreciation is added back under the indirect method because it reduced net income but did not use cash in the period."],
+["5. Financial statement analysis","Horizontal analysis compares amounts across periods. Vertical analysis expresses line items as a percentage of a base amount. Common-size statements present financial statement items in percentage form. Ratio analysis evaluates relationships such as liquidity and profitability. The book discusses current ratio, quick ratio and other analytical measures.","Horizontal analysis ኣብ ዝተፈላለየ ዓመታት የነጻጽር። Vertical analysis ነፍሲ ወከፍ መጠን ከም ሚእታዊ ናይ መሰረት መጠን የርኢ።","Current ratio = Current Assets ÷ Current Liabilities. Quick ratio = Quick Assets ÷ Current Liabilities. Quick assets in the textbook include cash, marketable securities and accounts receivable."]
+],
+example:"Beginning cash $12,000; operating net cash +$46,000; investing net cash +$28,000; financing net cash −$36,000. Net increase = $38,000; ending cash = $50,000.",
+quiz:[
+["Which is an investing activity?",["Paying wages","Buying equipment","Issuing common stock"],1,"Buying long-term equipment is an investing activity."],
+["Which method starts with net income?",["Direct","Indirect","FIFO"],1,"The indirect method adjusts net income to operating cash flow."],
+["Current ratio equals:",["Current assets ÷ current liabilities","Cash ÷ sales","Net income ÷ assets"],0,"Current ratio measures current assets relative to current liabilities."]
+]}
+];
+
+let state=JSON.parse(localStorage.getItem("faa_progress")||'{"completed":[],"scores":{}}');
+let active=0;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem("faa_progress",JSON.stringify(state));renderProgress()}
+function renderProgress(){$("done").textContent=state.completed.length;$("bar").style.width=(state.completed.length/7*100)+"%"}
+function renderChapters(){
+ $("chapters").innerHTML=chapters.map((c,i)=>`<article class="chapter ${active===i?'active':''}" data-i="${i}"><div class="tag">Chapter ${i+1} · pages ${c.pages}</div><h3>${c.title}</h3><p>${c.desc}</p><p class="small">${state.completed.includes(i)?'✓ Completed':(state.scores[i]!==undefined?'Quiz score: '+state.scores[i]+'%':'Not completed')}</p></article>`).join("");
+ document.querySelectorAll(".chapter").forEach(el=>el.addEventListener("click",()=>{active=+el.dataset.i;renderChapters();renderLesson()}));
+}
+function langText(en,ti){const l=$("language").value; if(l==="ti")return `<p>${ti}</p>`;if(l==="bi")return `<p class="callout"><b>Tigrinya:</b> ${ti}</p>`;return ""}
+function renderLesson(){
+ const c=chapters[active];
+ $("content").innerHTML=`<div class="tag">Chapter ${active+1} · Pages ${c.pages}</div><h2>${c.title}</h2><p class="muted">${c.desc}</p>
+ ${c.lessons.map((l,i)=>`<div class="example"><h3>${l[0]}</h3><p>${l[1]}</p>${langText(l[1],l[2])}<p class="small muted"><b>Remember:</b> ${l[3]}</p></div>`).join("")}
+ ${active===0?`<section class="example"><div class="tag">Expanded textbook-aligned study notes</div><h3>Chapter 1 deep-dive lessons</h3><p class="muted small">These additional notes follow the original chapter sections and page ranges. They are explanations and practice aids, not a substitute for reading the full textbook examples.</p>${chapterOneDeepDive.map((d,i)=>`<details class="deep-lesson" ${i===0?'open':''}><summary><b>${d.title}</b><span class="small muted"> ${d.pages}</span></summary><div class="deep-body"><p>${d.body}</p><ul>${d.points.map(p=>`<li>${p}</li>`).join('')}</ul><div class="callout"><b>Example:</b> ${d.example}</div></div></details>`).join('')}</section>
+ <section class="example"><div class="tag">Interactive learning game</div><h3>Classify the account</h3><p>Choose the correct category for each account. Score all five to practise the account types.</p><div id="classify-game"></div><p id="classify-result" class="callout" aria-live="polite">Choose a category for each account.</p><button class="primary" id="check-classify">Check classification</button></section>
+ <section class="example"><div class="tag">Journal entry practice</div><h3>Build the correct entry</h3><p>A business paid $450 cash for this month’s electricity bill. Choose the correct debit and credit accounts.</p><label>Debit account <select id="journal-debit"><option value="">Choose an account</option><option>Cash</option><option>Utilities Expense</option><option>Fees Earned</option><option>Accounts Payable</option></select></label><label>Credit account <select id="journal-credit"><option value="">Choose an account</option><option>Cash</option><option>Utilities Expense</option><option>Fees Earned</option><option>Accounts Payable</option></select></label><button class="primary" id="check-journal">Check journal entry</button><p id="journal-result" class="callout" aria-live="polite"></p></section>`:''}
+ <h3>Worked example</h3><div class="callout">${c.example}</div>
+ <h3>Knowledge check</h3><div id="quiz">${c.quiz.map((q,i)=>`<div class="quizq"><b>${i+1}. ${q[0]}</b>${q[1].map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")}<div class="answer" id="a${i}"></div></div>`).join("")}</div>
+ <div class="actions"><button class="primary" id="grade">Check my answers</button><button id="complete">Mark chapter complete</button></div><p id="scoreline" class="callout" aria-live="polite"></p>
+ <div class="callout"><b>Revision tip:</b> Explain each topic aloud in your own words, then practise writing the journal entries without looking at the example.</div>`;
+ $("grade").onclick=gradeQuiz;
+ if(active===0){
+   const accountItems=[['Cash','Asset'],['Accounts Payable','Liability'],['Common Stock','Equity'],['Fees Earned','Revenue'],['Rent Expense','Expense']];
+   const categories=['Asset','Liability','Equity','Revenue','Expense'];
+   $("classify-game").innerHTML=accountItems.map((item,i)=>`<div class="game-row"><b>${item[0]}</b><select data-classify="${i}"><option value="">Choose category</option>${categories.map(c=>`<option>${c}</option>`).join('')}</select></div>`).join('');
+   $("check-classify").onclick=()=>{let right=0;accountItems.forEach((item,i)=>{const v=document.querySelector(`[data-classify="${i}"]`).value;if(v===item[1])right++});$("classify-result").textContent=`You correctly classified ${right} of 5 accounts. ${right===5?'Excellent — all five categories are correct.':'Review the five account categories above and try again.'}`};
+   $("check-journal").onclick=()=>{const d=$("journal-debit").value,c=$("journal-credit").value;$("journal-result").textContent=(d==='Utilities Expense'&&c==='Cash')?'Correct. Debit Utilities Expense $450 and credit Cash $450. The expense increases and cash decreases.':'Not quite. Think about which account is an expense and which asset is being paid out. Try again.'};
+ }
+ $("complete").onclick=()=>{if(!state.completed.includes(active))state.completed.push(active);save();renderChapters();$("scoreline").textContent="Chapter marked complete. Keep practising to strengthen your understanding."};
+}
+function gradeQuiz(){
+ const c=chapters[active];let score=0;
+ c.quiz.forEach((q,i)=>{const chosen=document.querySelector(`input[name="q${i}"]:checked`);const ok=chosen&&+chosen.value===q[2];if(ok)score++;const a=$("a"+i);a.className="answer show";a.textContent=(ok?"Correct. ":"Review. ")+q[3]});
+ const pct=Math.round(score/c.quiz.length*100);state.scores[active]=pct;if(pct>=70&&!state.completed.includes(active))state.completed.push(active);save();renderChapters();$("scoreline").textContent=`You scored ${score}/${c.quiz.length} (${pct}%). ${pct>=70?"Good work — chapter marked complete.":"Review the explanations and try again. Aim for at least 70%."}`;
+}
+$("language").addEventListener("change",()=>{if($("content").querySelector("#quiz"))renderLesson()});
+$("reset").onclick=()=>{if(confirm("Clear all saved chapter progress and quiz scores on this device?")){state={completed:[],scores:{}};save();renderChapters();renderLesson()}};
+$("tutor").onclick=()=>{const c=chapters[active];const prompt=`Act as a patient financial accounting tutor. I am studying Chapter ${active+1}: ${c.title} from Principles of Financial Accounting by Christine Jonick. Teach me the chapter carefully, step by step, with simple examples, correct journal entries and short practice questions. Explain difficult terms in Tigrinya when useful. Do not skip topics. Begin by asking what I already understand about this chapter.`;window.open("https://chatgpt.com/?q="+encodeURIComponent(prompt),"_blank")};
+$("calc").onclick=()=>{let a=$("assets").value,l=$("liabilities").value,e=$("equity").value;let n=[a,l,e].filter(v=>v!=="").length;if(n!==2){$("calcresult").textContent="Please enter exactly two amounts; the calculator will find the third.";return}a=a===""?null:+a;l=l===""?null:+l;e=e===""?null:+e;if(a===null)a=l+e;else if(l===null)l=a-e;else e=a-l;$("assets").value=a;$("liabilities").value=l;$("equity").value=e;$("calcresult").textContent=`Balanced: Assets ${a.toLocaleString()} = Liabilities ${l.toLocaleString()} + Equity ${e.toLocaleString()}.`};
+$("clearcalc").onclick=()=>{["assets","liabilities","equity"].forEach(id=>$(id).value="");$("calcresult").textContent="Assets = Liabilities + Stockholders’ Equity"};
+renderProgress();renderChapters();renderLesson();
+</script>
+</body></html>
